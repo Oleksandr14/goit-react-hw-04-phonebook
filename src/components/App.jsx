@@ -13,6 +13,19 @@ export const App = () => {
   const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState('');
 
+  useEffect(() => {
+    const contact = localStorage.getItem(LS_KEY);
+    const parseContacts = JSON.parse(contact);
+
+    if (parseContacts) {
+      setContacts(p => [...p, ...parseContacts]);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(LS_KEY, JSON.stringify(contacts));
+  }, [contacts]);
+
   const addContact = (newContact, name) => {
     const namesArray = contacts.map(contact => contact.name.toLowerCase());
 
@@ -35,19 +48,6 @@ export const App = () => {
   };
 
   const changeFilter = filter => setFilter(filter);
-
-  useEffect(() => {
-    const contact = localStorage.getItem(LS_KEY);
-    const parseContacts = JSON.parse(contact);
-
-    if (parseContacts) {
-      setContacts(p => [...p, ...parseContacts]);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem(LS_KEY, JSON.stringify(contacts));
-  }, [contacts]);
 
   return (
     <Box p={4}>
